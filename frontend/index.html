@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/main.css">
-  <title>Online Chat</title>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Manrope:wght@700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="./css/main.css" />
+		<title>Online Chat</title>
+	</head>
+	<body>
+		<header class="header">
+			<img class="header__logo" src="./assets/logo-jr-chat.svg" alt="Logo" />
+			<h1 class="header__title">Online Chat</h1>
+			<div class="header__action">
+				<button class="header__action--btn">
+					<img src="./assets/menu-icon-btn--light.svg" alt="menu-icon" />
+				</button>
+			</div>
+		</header>
+		<main class="messages"></main>
 
-<main class="messages">
-
-</main>
-
-<script src="./js/index.js"></script>
-
-</body>
+		<script src="./js/index.js"></script>
+	</body>
 </html>

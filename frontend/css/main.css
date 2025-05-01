@@ -18,3 +18,39 @@ body {
 	font-style: normal;
 	background-color: var(--background-color);
 }
+
+.header {
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--primary-color);
+	color: var(--background-color);
+	height: 50px;
+	padding-inline: 26px;
+}
+.header__logo {
+	padding-right: 40px;
+}
+.header__title {
+	margin: 0;
+	font-family: 'Manrope', sans-serif;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 33px;
+	text-align: center;
+	color: var(--background-color);
+}
+.header__action {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	right: 26px;
+}
+.header__action--btn {
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
