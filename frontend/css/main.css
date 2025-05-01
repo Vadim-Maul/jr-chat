@@ -27,7 +27,7 @@ main {
 }
 .container {
 	width: 883px;
-	max-width: 100%;
+	max-width: 90%;
 	margin: 0 auto;
 }
 .header {
@@ -63,5 +63,45 @@ main {
 .header__action--btn {
 	border: none;
 	background-color: transparent;
+	cursor: pointer;
+}
+.footer {
+	padding-bottom: 37px;
+}
+
+.footer__input {
+	display: flex;
+	width: 100%;
+}
+.footer__input--field {
+	flex: 1;
+	padding: 10px;
+	border-top: 1px solid var(--primary-color);
+	border-left: 1px solid var(--primary-color);
+	border-bottom: 1px solid var(--primary-color);
+	border-right: none;
+	border-radius: 8px 0px 0px 8px;
+}
+.footer__input--field:focus {
+	outline: none;
+	border-top: 2px solid var(--primary-color);
+	border-left: 2px solid var(--primary-color);
+	border-bottom: 2px solid var(--primary-color);
+	border-right: none;
+}
+.footer__input--field:focus + .footer__input--btn {
+	outline: none;
+	border-top: 2px solid var(--primary-color);
+	border-right: 2px solid var(--primary-color);
+	border-bottom: 2px solid var(--primary-color);
+}
+.footer__input--btn {
+	border-left: none;
+	background-color: transparent;
+	border-top: 1px solid var(--primary-color);
+	border-right: 1px solid var(--primary-color);
+	border-bottom: 1px solid var(--primary-color);
+	padding: 10px;
+	border-radius: 0px 8px 8px 0;
 	cursor: pointer;
 }
