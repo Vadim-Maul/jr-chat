@@ -17,8 +17,19 @@ body {
 	font-weight: 400;
 	font-style: normal;
 	background-color: var(--background-color);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
 
+main {
+	flex: 1;
+}
+.container {
+	width: 883px;
+	max-width: 100%;
+	margin: 0 auto;
+}
 .header {
 	display: flex;
 	position: relative;
