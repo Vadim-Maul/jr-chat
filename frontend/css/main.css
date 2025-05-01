@@ -49,6 +49,19 @@ main {
 	width: fit-content;
 	justify-self: end;
 	align-self: center;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+.message-control span {
+	width: 4px;
+	height: 4px;
+	background-color: var(--primary-color);
+	border-radius: 50%;
+	display: inline-block;
 }
 
 .message-author {
