@@ -1,0 +1,20 @@
+:root {
+	--primary-color: #160211;
+	--background-color: #fff;
+	--font-family: '"Inter", sans-serif';
+}
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-family);
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	background-color: var(--background-color);
+}
