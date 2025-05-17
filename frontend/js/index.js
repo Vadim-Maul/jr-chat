@@ -1,12 +1,16 @@
-{
+document.addEventListener('DOMContentLoaded', () => {
 	const container = document.querySelector('.messages');
 
 	function renderMessages(messages) {
+		container.innerHTML = '';
+		const pad = (num) => String(num).padStart(2, '0');
 		for (const message of messages) {
 			const messageElement = document.createElement('article');
 			messageElement.className = 'message';
-			const hours = new Date(message.timestamp).getHours();
-			const minutes = new Date(message.timestamp).getMinutes();
+
+			const date = new Date(message.timestamp);
+			const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
 			messageElement.innerHTML = `
         <div class="message-author">${message.username}</div>
         <button class="message-control">
@@ -15,62 +19,73 @@
           <span></span>
         </button>
         <p class="message-text">${message.text}</p>
-        <time>${hours}:${minutes}</time>
+        <time>${time}</time>
       `;
 
 			container.appendChild(messageElement);
 		}
 	}
 
-	function getMessages() {
-		fetch('http://localhost:4000/messages', {
-			method: 'GET',
-		})
-			.then(function (messagesResponse) {
-				if (messagesResponse.status !== 200) {
-					throw new Error("Couldn't get messages from server");
-				}
+	async function getMessages() {
+		try {
+			const res = await fetch('http://localhost:4000/messages');
+			if (!res.ok) throw new Error("Couldn't get messages");
+			const messages = await res.json();
+			renderMessages(messages);
+		} catch (err) {
+			console.error('Fetch messages error:', err);
+		}
+	}
 
-				return messagesResponse.json();
-			})
-			.then(function (messagesList) {
-				console.log(messagesList);
-				renderMessages(messagesList);
+	async function sendMessage(message) {
+		try {
+			const res = await fetch('http://localhost:4000/messages', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(message),
 			});
+			if (res.status !== 201) throw new Error("Couldn't send message");
+			await getMessages();
+		} catch (err) {
+			console.error('Send message error:', err);
+		}
 	}
 
-	function sendMessage(message) {
-		fetch('http://localhost:4000/messages', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(message),
-		}).then(function (response) {
-			if (response.status !== 200) {
-				throw new Error("Couldn't send message to server");
-			}
-			getMessages();
-		});
-	}
-
-	function initForm() {
+	async function setupFormHandlers() {
 		const form = document.querySelector('.footer-form');
-		form.addEventListener('submit', function (event) {
-			event.preventDefault();
-			const formData = new FormData(event.target);
+
+		const textInput = form.querySelector('input[name="text"]');
+		const formButton = form.querySelector('button[type="submit"]');
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			const text = textInput.value.trim();
+			if (text.length < 2) return alert('Message is too short');
+			if (text.length > 400) return alert('Message is too long');
+			const formData = new FormData(form);
 			const messageData = {
 				username: formData.get('username'),
 				text: formData.get('text'),
 			};
-			sendMessage(messageData);
+
+			formButton.disabled = true;
+			textInput.disabled = true;
+
+			await sendMessage(messageData);
+
+			textInput.value = '';
+			textInput.disabled = false;
+			formButton.disabled = false;
+
+			textInput.focus();
 		});
 	}
 
-	function initChat() {
-		getMessages();
-		initForm();
+	async function initializeChatApp() {
+		await getMessages();
+		await setupFormHandlers();
 	}
 
-	initChat();
-}
+	initializeChatApp();
+});
