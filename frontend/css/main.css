@@ -176,12 +176,13 @@ main {
 	cursor: pointer;
 }
 .footer {
-	padding-bottom: 37px;
+	padding-bottom: 30px;
 }
 
 .footer-form {
 	display: flex;
 	width: 100%;
+	position: relative;
 }
 .footer-form__input {
 	flex: 1;
@@ -215,8 +216,52 @@ main {
 	border-radius: 0px 8px 8px 0;
 	cursor: pointer;
 }
+
+/* editor */
+
+#editorjs {
+	width: 100%;
+	border-top: 1px solid var(--primary-color);
+	border-left: 1px solid var(--primary-color);
+	border-bottom: 1px solid var(--primary-color);
+	border-right: none;
+	border-radius: 8px 0px 0px 8px;
+	padding: 10px;
+}
+.cdx-block {
+	max-height: 20svh;
+	overflow-y: auto;
+}
+
+.emoji-button {
+	background-color: var(--primary-color);
+	left: -40px;
+	top: 10px;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	z-index: 100;
+	border: 1px solid var(--primary-color);
+	border-radius: 50%;
+	padding: 5px;
+}
+emoji-picker {
+	position: absolute;
+	z-index: 100;
+	right: 0;
+	display: none;
+}
+
+emoji-picker[open] {
+	display: block;
+}
 @media screen and (min-width: 576px) {
 	.messages {
-		max-height: 70svh;
+		max-height: 33svh;
 	}
 }

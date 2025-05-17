@@ -1,6 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
 	const container = document.querySelector('.messages');
 	const dialogElement = document.querySelector('dialog');
+	const editor = new EditorJS({
+		holder: 'editorjs',
+		tools: {
+			header: Header,
+			list: {
+				class: EditorjsList,
+				inlineToolbar: true,
+				config: {
+					defaultStyle: 'unordered',
+				},
+			},
+			inlineCode: InlineCode,
+			paragraph: {
+				class: Paragraph,
+				inlineToolbar: true,
+			},
+		},
+		placeholder: 'Type your message here...',
+	});
 	function renderMessages(messages) {
 		container.innerHTML = '';
 		const pad = (num) => String(num).padStart(2, '0');
@@ -50,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			console.error('Send message error:', err);
 		}
 	}
+
 	function showDialog(message) {
 		dialogElement.querySelector('p').textContent =
 			message || 'Please enter a valid message';
@@ -58,40 +78,60 @@ document.addEventListener('DOMContentLoaded', () => {
 			dialogElement.close();
 		});
 	}
+
 	async function setupFormHandlers() {
 		const form = document.querySelector('.footer-form');
+		const emojiPicker = form.querySelector('emoji-picker');
+		const emojiBtn = form.querySelector('.emoji-button');
+
+		emojiBtn.addEventListener('click', () => {
+			emojiPicker.toggleAttribute('open');
+		});
+		emojiPicker.addEventListener('emoji-click', (e) => {
+			const emoji = e.detail.unicode;
+			editor.blocks.insert('paragraph', { text: emoji });
+		});
 
 		const textInput = form.querySelector('input[name="text"]');
 		const formButton = form.querySelector('button[type="submit"]');
 
 		form.addEventListener('submit', async (e) => {
 			e.preventDefault();
+			try {
+				const savedData = await editor.save();
+				textInput.value = JSON.stringify(savedData);
+				const text = textInput.value.trim();
+				console.log('Содержимое редактора:', textInput.value);
+				return;
+				if (text.length < 2) {
+					showDialog('Message is too short');
+					return;
+				}
+				if (text.length > 400) {
+					showDialog('Message is too long');
+					return;
+				}
+				const formData = new FormData(form);
+				const messageData = {
+					username: formData.get('username'),
+					text: formData.get('text'),
+				};
 
+				formButton.disabled = true;
+				textInput.disabled = true;
+
+				await sendMessage(messageData);
+
+				textInput.value = '';
+				textInput.disabled = false;
+				formButton.disabled = false;
+
+				textInput.focus();
+			} catch (error) {
+				console.error('Error in form submission:', error);
+				showDialog('An error occurred while sending the message');
+			}
 			const text = textInput.value.trim();
-			if (text.length < 2) {
-				showDialog('Message is too short');
-				return;
-			}
-			if (text.length > 400) {
-				showDialog('Message is too long');
-				return;
-			}
-			const formData = new FormData(form);
-			const messageData = {
-				username: formData.get('username'),
-				text: formData.get('text'),
-			};
-
-			formButton.disabled = true;
-			textInput.disabled = true;
-
-			await sendMessage(messageData);
-
-			textInput.value = '';
-			textInput.disabled = false;
-			formButton.disabled = false;
-
-			textInput.focus();
 		});
 	}
 

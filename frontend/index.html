@@ -9,6 +9,19 @@
 			href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Manrope&display=swap"
 			rel="stylesheet"
 		/>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+		<script src="
+https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8/dist/editorjs-list.umd.min.js
+"></script>
+		<script
+			type="module"
+			src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.3.0"></script>
+
 		<link rel="stylesheet" href="./css/main.css" />
 		<title>Online Chat</title>
 	</head>
@@ -30,11 +43,15 @@
 			<form method="post" class="footer-form">
 				<input type="hidden" name="username" value="guest01" />
 				<input
+					type="hidden"
 					type="text"
 					name="text"
 					class="footer-form__input"
 					placeholder="Write a message..."
 				/>
+				<input type="button" value="😀" class="emoji-button" />
+				<emoji-picker class="light"></emoji-picker>
+				<div id="editorjs"></div>
 				<button class="footer-form__btn" type="submit">
 					<img src="./assets/send-icon.svg" alt="send-icon" />
 				</button>
