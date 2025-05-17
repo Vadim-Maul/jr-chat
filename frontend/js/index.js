@@ -20,6 +20,30 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 		placeholder: 'Type your message here...',
 	});
+
+	const state = {
+		polling: false,
+		isRequestInProgress: false,
+	};
+
+	async function poll() {
+		while (state.polling) {
+			await getMessages();
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+		}
+	}
+
+	function startPolling() {
+		if (!state.polling) {
+			state.polling = true;
+			poll();
+		}
+	}
+
+	function stopPolling() {
+		state.polling = false;
+	}
+
 	function renderMessages(messages) {
 		container.innerHTML = '';
 		const pad = (num) => String(num).padStart(2, '0');
@@ -46,6 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	async function getMessages() {
+		if (state.isRequestInProgress) return;
+		state.isRequestInProgress = true;
 		try {
 			const res = await fetch('http://localhost:4000/messages');
 			if (!res.ok) throw new Error("Couldn't get messages");
@@ -53,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			renderMessages(messages);
 		} catch (err) {
 			console.error('Fetch messages error:', err);
+		} finally {
+			state.isRequestInProgress = false;
 		}
 	}
 
@@ -136,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	async function initializeChatApp() {
-		await getMessages();
+		startPolling();
 		await setupFormHandlers();
 	}
 
