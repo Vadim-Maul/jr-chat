@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 	const container = document.querySelector('.messages');
-
+	const dialogElement = document.querySelector('dialog');
 	function renderMessages(messages) {
 		container.innerHTML = '';
 		const pad = (num) => String(num).padStart(2, '0');
@@ -50,7 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			console.error('Send message error:', err);
 		}
 	}
-
+	function showDialog(message) {
+		dialogElement.querySelector('p').textContent =
+			message || 'Please enter a valid message';
+		dialogElement.showModal();
+		dialogElement.querySelector('button').addEventListener('click', () => {
+			dialogElement.close();
+		});
+	}
 	async function setupFormHandlers() {
 		const form = document.querySelector('.footer-form');
 
@@ -61,8 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
 			e.preventDefault();
 
 			const text = textInput.value.trim();
-			if (text.length < 2) return alert('Message is too short');
-			if (text.length > 400) return alert('Message is too long');
+			if (text.length < 2) {
+				showDialog('Message is too short');
+				return;
+			}
+			if (text.length > 400) {
+				showDialog('Message is too long');
+				return;
+			}
 			const formData = new FormData(form);
 			const messageData = {
 				username: formData.get('username'),
