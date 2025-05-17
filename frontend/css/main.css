@@ -144,11 +144,11 @@ main {
 	padding-bottom: 37px;
 }
 
-.footer__input {
+.footer-form {
 	display: flex;
 	width: 100%;
 }
-.footer__input--field {
+.footer-form__input {
 	flex: 1;
 	padding: 10px;
 	border-top: 1px solid var(--primary-color);
@@ -157,20 +157,20 @@ main {
 	border-right: none;
 	border-radius: 8px 0px 0px 8px;
 }
-.footer__input--field:focus {
+.footer-form__input:focus {
 	outline: none;
 	border-top: 2px solid var(--primary-color);
 	border-left: 2px solid var(--primary-color);
 	border-bottom: 2px solid var(--primary-color);
 	border-right: none;
 }
-.footer__input--field:focus + .footer__input--btn {
+.footer-form__input:focus + .footer__input--btn {
 	outline: none;
 	border-top: 2px solid var(--primary-color);
 	border-right: 2px solid var(--primary-color);
 	border-bottom: 2px solid var(--primary-color);
 }
-.footer__input--btn {
+.footer-form__btn {
 	border-left: none;
 	background-color: transparent;
 	border-top: 1px solid var(--primary-color);

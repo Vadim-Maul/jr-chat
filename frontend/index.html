@@ -26,16 +26,18 @@
 			<div class="messages"></div>
 		</main>
 		<footer class="footer container">
-			<div class="footer__input">
+			<form method="post" class="footer-form">
+				<input type="hidden" name="username" value="guest01" />
 				<input
 					type="text"
-					class="footer__input--field"
+					name="text"
+					class="footer-form__input"
 					placeholder="Write a message..."
 				/>
-				<button class="footer__input--btn">
+				<button class="footer-form__btn" type="submit">
 					<img src="./assets/send-icon.svg" alt="send-icon" />
 				</button>
-			</div>
+			</form>
 		</footer>
 		<script src="./js/index.js"></script>
 	</body>
