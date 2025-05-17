@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const container = document.querySelector('.messages');
 	const userNameContainer = document.querySelector('.dialog--username');
 	const dialogElement = document.querySelector('dialog--message');
+	const logoutButton = document.querySelector('.header__action--btn');
 	const editor = new EditorJS({
 		holder: 'editorjs',
 		tools: {
@@ -190,12 +191,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		startPolling();
 		await setupFormHandlers();
 	}
+	function logoutHandler() {
+		localStorage.removeItem(USERNAME_REC);
+		stopPolling();
+		window.location.reload();
+	}
 	async function initializeChatApp() {
 		state.username = localStorage.getItem(USERNAME_REC);
 		if (!state.username) {
 			initUsername(state.username);
 			return;
 		}
+		logoutButton.onclick = logoutHandler;
 		await initChat();
 	}
 
