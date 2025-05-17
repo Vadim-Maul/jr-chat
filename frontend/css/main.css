@@ -10,7 +10,7 @@
 }
 ::backdrop {
 	background-image: linear-gradient(45deg, #ff86e1, #89bcff);
-	opacity: 0.75;
+	opacity: 1;
 }
 
 dialog {
@@ -77,6 +77,9 @@ main {
 	display: grid;
 	grid-template-rows: auto;
 	row-gap: 5px;
+}
+.message.message-mine {
+	margin-left: auto;
 }
 .message-control {
 	grid-row: 1;
@@ -228,6 +231,9 @@ main {
 	border-radius: 8px 0px 0px 8px;
 	padding: 10px;
 }
+#editorjs .codex-editor__redactor {
+	padding-bottom: 0 !important;
+}
 .cdx-block {
 	max-height: 20svh;
 	overflow-y: auto;
@@ -254,6 +260,7 @@ emoji-picker {
 	position: absolute;
 	z-index: 100;
 	right: 0;
+	top: -350px;
 	display: none;
 }
 
@@ -262,6 +269,6 @@ emoji-picker[open] {
 }
 @media screen and (min-width: 576px) {
 	.messages {
-		max-height: 33svh;
+		max-height: 65svh;
 	}
 }

@@ -1,17 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+	const USERNAME_REC = 'username';
+
 	const container = document.querySelector('.messages');
-	const dialogElement = document.querySelector('dialog');
+	const userNameContainer = document.querySelector('.dialog--username');
+	const dialogElement = document.querySelector('dialog--message');
 	const editor = new EditorJS({
 		holder: 'editorjs',
 		tools: {
 			header: Header,
-			list: {
-				class: EditorjsList,
-				inlineToolbar: true,
-				config: {
-					defaultStyle: 'unordered',
-				},
-			},
 			inlineCode: InlineCode,
 			paragraph: {
 				class: Paragraph,
@@ -20,10 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		},
 		placeholder: 'Type your message here...',
 	});
-
 	const state = {
 		polling: false,
 		isRequestInProgress: false,
+		username: null,
 	};
 
 	async function poll() {
@@ -44,13 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		state.polling = false;
 	}
 
+	function validateMessage(message) {
+		if (message.length < 2) {
+			return false;
+		}
+		if (message.length > 400) {
+			return false;
+		}
+		return true;
+	}
+
 	function renderMessages(messages) {
 		container.innerHTML = '';
 		const pad = (num) => String(num).padStart(2, '0');
 		for (const message of messages) {
 			const messageElement = document.createElement('article');
 			messageElement.className = 'message';
-
+			messageElement.setAttribute('data-id', message.id);
+			messageElement.classList.toggle(
+				'message-mine',
+				state.username === message.username
+			);
 			const date = new Date(message.timestamp);
 			const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 
@@ -98,6 +108,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
+	function initUsername() {
+		const form = userNameContainer.querySelector('form');
+		form.onsubmit = async function (e) {
+			e.preventDefault();
+			const formEl = e.target;
+			const formData = new FormData(formEl);
+			const username = formData.get('username').trim();
+			if (username.length < 2 || username.length > 20) {
+				form.querySelector('.error').textContent =
+					'Username must be between 2 and 20 characters';
+				return;
+			}
+			localStorage.setItem(USERNAME_REC, username);
+			userNameContainer.close();
+			form.querySelector('.error').textContent = '';
+			form.onsubmit = null;
+			await initializeChatApp();
+		};
+
+		userNameContainer.showModal();
+	}
 	function showDialog(message) {
 		dialogElement.querySelector('p').textContent =
 			message || 'Please enter a valid message';
@@ -109,6 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	async function setupFormHandlers() {
 		const form = document.querySelector('.footer-form');
+		const userNameField = form.querySelector('input[name="username"]');
+		userNameField.value = state.username;
 		const emojiPicker = form.querySelector('emoji-picker');
 		const emojiBtn = form.querySelector('.emoji-button');
 
@@ -127,34 +160,24 @@ document.addEventListener('DOMContentLoaded', () => {
 			e.preventDefault();
 			try {
 				const savedData = await editor.save();
-				textInput.value = JSON.stringify(savedData);
-				const text = textInput.value.trim();
-				console.log('Содержимое редактора:', textInput.value);
-				return;
-				if (text.length < 2) {
-					showDialog('Message is too short');
+				const text = savedData.blocks
+					.map((block) => block.data.text)
+					.join('<br>');
+				text.trim();
+				if (!validateMessage(text)) {
+					showDialog('Please enter a valid message');
 					return;
 				}
-				if (text.length > 400) {
-					showDialog('Message is too long');
-					return;
-				}
+				textInput.value = text;
 				const formData = new FormData(form);
 				const messageData = {
 					username: formData.get('username'),
 					text: formData.get('text'),
 				};
-
 				formButton.disabled = true;
-				textInput.disabled = true;
-
 				await sendMessage(messageData);
-
-				textInput.value = '';
-				textInput.disabled = false;
 				formButton.disabled = false;
-
-				textInput.focus();
+				editor.clear();
 			} catch (error) {
 				console.error('Error in form submission:', error);
 				showDialog('An error occurred while sending the message');
@@ -163,9 +186,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	async function initializeChatApp() {
+	async function initChat() {
 		startPolling();
 		await setupFormHandlers();
+	}
+	async function initializeChatApp() {
+		state.username = localStorage.getItem(USERNAME_REC);
+		if (!state.username) {
+			initUsername(state.username);
+			return;
+		}
+		await initChat();
 	}
 
 	initializeChatApp();

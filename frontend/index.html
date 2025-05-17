@@ -12,10 +12,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
-		<script src="
-https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8/dist/editorjs-list.umd.min.js
-"></script>
 		<script
 			type="module"
 			src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"
@@ -57,9 +53,30 @@ https://cdn.jsdelivr.net/npm/@editorjs/list@2.0.8/dist/editorjs-list.umd.min.js
 				</button>
 			</form>
 		</footer>
-		<dialog>
+		<dialog class="dialog dialog--error">
 			<button autofocus class="dialog-button">Close</button>
 			<p class="dialog-message"></p>
+		</dialog>
+		<dialog class="dialog dialog--username">
+			<form method="post" class="dialog-form">
+				<fieldset>
+					<label>username</label>
+					<input
+						required
+						type="text"
+						placeholder="your username"
+						autocapitalize="off"
+						autocomplete="off"
+						autocorrect="off"
+						spellcheck="false"
+						name="username"
+						class="dialog-form__input"
+					/>
+					<div class="error"></div>
+				</fieldset>
+				<button class="dialog-form__btn">Set</button>
+			</form>
+			<p class="dialog-message">Please enter your username</p>
 		</dialog>
 		<script src="./js/index.js"></script>
 	</body>
