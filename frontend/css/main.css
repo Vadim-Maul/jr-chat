@@ -8,6 +8,87 @@
 *::after {
 	box-sizing: border-box;
 }
+::backdrop {
+	background-image: linear-gradient(45deg, #ff86e1, #89bcff);
+	opacity: 1;
+}
+
+dialog {
+	background-color: var(--background-color);
+	border-radius: 8px;
+	box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	border: none;
+	min-width: 300px;
+}
+dialog .dialog-button {
+	margin-left: auto;
+	display: block;
+	background-color: var(--primary-color);
+	color: var(--background-color);
+	border: none;
+	border-radius: 8px;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-family: var(--font-family);
+	font-style: normal;
+	font-weight: 700;
+	font-size: 14px;
+}
+dialog .dialog-message {
+	font-family: var(--font-family);
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+	color: var(--primary-color);
+}
+
+.dialog--username {
+	background-color: var(--background-color);
+	padding: 25px 35px;
+	border-radius: 8px;
+	box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+.dialog--username form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.dialog--username fieldset {
+	border: none;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding: 0;
+}
+.dialog--username fieldset label {
+	color: #1b2b41b0;
+	font-size: 15px;
+}
+.dialog--username fieldset input {
+	padding: 10px;
+	background-color: #1a38601a;
+	color: #1b2b41b0;
+	border: none;
+	border-radius: 8px;
+}
+.dialog--username fieldset input:focus {
+	outline: none;
+	border: 2px solid var(--primary-color);
+}
+.dialog--username .dialog-form__btn {
+	background-color: var(--primary-color);
+	color: var(--background-color);
+	border: none;
+	border-radius: 8px;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-family: var(--font-family);
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+}
 
 body {
 	margin: 0;
@@ -42,6 +123,9 @@ main {
 	display: grid;
 	grid-template-rows: auto;
 	row-gap: 5px;
+}
+.message.message-mine {
+	margin-left: auto;
 }
 .message-control {
 	grid-row: 1;
@@ -139,14 +223,16 @@ main {
 	border: none;
 	background-color: transparent;
 	cursor: pointer;
+	color: var(--background-color);
 }
 .footer {
-	padding-bottom: 37px;
+	padding-bottom: 30px;
 }
 
 .footer-form {
 	display: flex;
 	width: 100%;
+	position: relative;
 }
 .footer-form__input {
 	flex: 1;
@@ -180,8 +266,56 @@ main {
 	border-radius: 0px 8px 8px 0;
 	cursor: pointer;
 }
+
+/* editor */
+
+#editorjs {
+	width: 100%;
+	border-top: 1px solid var(--primary-color);
+	border-left: 1px solid var(--primary-color);
+	border-bottom: 1px solid var(--primary-color);
+	border-right: none;
+	border-radius: 8px 0px 0px 8px;
+	padding: 10px;
+}
+#editorjs .codex-editor__redactor {
+	padding-bottom: 0 !important;
+}
+.cdx-block {
+	max-height: 20svh;
+	overflow-y: auto;
+}
+
+.emoji-button {
+	background-color: var(--primary-color);
+	left: -40px;
+	top: 10px;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	z-index: 100;
+	border: 1px solid var(--primary-color);
+	border-radius: 50%;
+	padding: 5px;
+}
+emoji-picker {
+	position: absolute;
+	z-index: 100;
+	right: 0;
+	top: -350px;
+	display: none;
+}
+
+emoji-picker[open] {
+	display: block;
+}
 @media screen and (min-width: 576px) {
 	.messages {
-		max-height: 70svh;
+		max-height: 65svh;
 	}
 }
