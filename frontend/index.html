@@ -9,6 +9,15 @@
 			href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Manrope&display=swap"
 			rel="stylesheet"
 		/>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+		<script
+			type="module"
+			src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.3.0"></script>
+
 		<link rel="stylesheet" href="./css/main.css" />
 		<title>Online Chat</title>
 	</head>
@@ -17,11 +26,10 @@
 			<img class="header__logo" src="./assets/logo-jr-chat.svg" alt="Logo" />
 			<h1 class="header__title">Online Chat</h1>
 			<div class="header__action">
-				<button class="header__action--btn">
-					<img src="./assets/menu-icon-btn--light.svg" alt="menu-icon" />
-				</button>
+				<button class="header__action--btn">Logout</button>
 			</div>
 		</header>
+
 		<main class="main container">
 			<div class="messages"></div>
 		</main>
@@ -29,16 +37,44 @@
 			<form method="post" class="footer-form">
 				<input type="hidden" name="username" value="guest01" />
 				<input
+					type="hidden"
 					type="text"
 					name="text"
 					class="footer-form__input"
 					placeholder="Write a message..."
 				/>
+				<input type="button" value="😀" class="emoji-button" />
+				<emoji-picker class="light"></emoji-picker>
+				<div id="editorjs"></div>
 				<button class="footer-form__btn" type="submit">
 					<img src="./assets/send-icon.svg" alt="send-icon" />
 				</button>
 			</form>
 		</footer>
+		<dialog class="dialog dialog--error">
+			<button autofocus class="dialog-button">Close</button>
+			<p class="dialog-message"></p>
+		</dialog>
+		<dialog class="dialog dialog--username">
+			<form method="post" class="dialog-form">
+				<fieldset>
+					<label>Username</label>
+					<input
+						required
+						type="text"
+						placeholder="your username"
+						autocapitalize="off"
+						autocomplete="off"
+						autocorrect="off"
+						spellcheck="false"
+						name="username"
+						class="dialog-form__input"
+					/>
+					<div class="error"></div>
+				</fieldset>
+				<button class="dialog-form__btn">Join</button>
+			</form>
+		</dialog>
 		<script src="./js/index.js"></script>
 	</body>
 </html>
